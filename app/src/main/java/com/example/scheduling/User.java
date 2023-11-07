@@ -3,13 +3,17 @@ package com.example.scheduling;
 //model class for our ListView
 public class User {
     //Attributes
-    private String name, sampleText;
+    private String name, email;
     private int userImage;
 
     //constructor
+    public User(String name, String email) {
+        this.email = email;
+        this.name = name;
+    }
     public User(String name, String sampleText, int userImage) {
         this.name = name;
-        this.sampleText = sampleText;
+        this.email = sampleText;
         this.userImage = userImage;
     }
 
@@ -24,11 +28,11 @@ public class User {
     }
 
     public String getSampleText() {
-        return sampleText;
+        return email;
     }
 
     public void setSampleText(String sampleText) {
-        this.sampleText = sampleText;
+        this.email = sampleText;
     }
 
     public int getUserImage() {
