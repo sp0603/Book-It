@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ContactsPage extends Fragment {
 
     ListView listView;
-    ArrayList<User> userArrayList;
+    ArrayList<ListViewUser> userArrayList;
     private ListItemAdapter adapter;
     public ContactsPage() {
         // Required empty public constructor
@@ -35,15 +35,15 @@ public class ContactsPage extends Fragment {
         //2- Data Source: ArrayList<User>
         userArrayList = new ArrayList<>();
 
-        User user1 = new User("Joe Smith", "sample text", R.drawable.profileimg);
-        User user2 = new User("Kara Adams", "sample text", R.drawable.profileimg);
-        User user3 = new User("Jessica Lee", "sample text", R.drawable.profileimg);
-        User user4 = new User("Hailey Cardenas", "sample text", R.drawable.profileimg);
-        User user5 = new User("Andrew Ortega", "sample text", R.drawable.profileimg);
-        User user6 = new User("Victor Jarvis", "sample text", R.drawable.profileimg);
-        User user7 = new User("Matthew Beck", "sample text", R.drawable.profileimg);
-        User user8 = new User("Mason Green", "sample text", R.drawable.profileimg);
-        User user9 = new User("Breanna Fox", "sample text", R.drawable.profileimg);
+        ListViewUser user1 = new ListViewUser("Joe Smith", "sample text", R.drawable.profileimg);
+        ListViewUser user2 = new ListViewUser("Kara Adams", "sample text", R.drawable.profileimg);
+        ListViewUser user3 = new ListViewUser("Jessica Lee", "sample text", R.drawable.profileimg);
+        ListViewUser user4 = new ListViewUser("Hailey Cardenas", "sample text", R.drawable.profileimg);
+        ListViewUser user5 = new ListViewUser("Andrew Ortega", "sample text", R.drawable.profileimg);
+        ListViewUser user6 = new ListViewUser("Victor Jarvis", "sample text", R.drawable.profileimg);
+        ListViewUser user7 = new ListViewUser("Matthew Beck", "sample text", R.drawable.profileimg);
+        ListViewUser user8 = new ListViewUser("Mason Green", "sample text", R.drawable.profileimg);
+        ListViewUser user9 = new ListViewUser("Breanna Fox", "sample text", R.drawable.profileimg);
 
 
         userArrayList.add(user1);

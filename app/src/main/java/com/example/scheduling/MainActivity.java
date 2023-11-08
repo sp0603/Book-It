@@ -25,22 +25,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if(user == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
-            //add new user to the database
-            String userId = user.getUid();
-            String userName = user.getDisplayName();
-            String userEmail = user.getEmail();
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-
-            User newUser = new User(userName, userEmail);
-
-            usersRef.child(userId).setValue(newUser);
             finish();
         }
 

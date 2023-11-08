@@ -13,13 +13,13 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class ListItemAdapter extends ArrayAdapter<User> {
+public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
     //using layouts = MyCustomAdapter
     //using custom objects = extends ArrayAdapter<User>
-    private ArrayList<User> userArrayList;
+    private ArrayList<ListViewUser> userArrayList;
     Context context;
 
-    public ListItemAdapter(ArrayList<User> userArrayList, Context context) {
+    public ListItemAdapter(ArrayList<ListViewUser> userArrayList, Context context) {
         super(context, R.layout.list_item_layout, userArrayList);
         this.userArrayList = userArrayList;
         this.context = context;
@@ -40,7 +40,7 @@ public class ListItemAdapter extends ArrayAdapter<User> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         //get the user object for the current position
-        User user = getItem(position);
+        ListViewUser user = getItem(position);
 
         //inflate layout
         MyViewHolder myViewHolder;

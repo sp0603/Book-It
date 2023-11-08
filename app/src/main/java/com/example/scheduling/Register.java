@@ -21,6 +21,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
@@ -83,6 +85,15 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account Created",
                                             Toast.LENGTH_SHORT).show();
+                                    //add user, email, name to database
+                                    String userId = mAuth.getCurrentUser().getUid();
+                                    String userName = "temp";
+
+                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+                                    User newUser = new User(userName, email);
+                                    usersRef.child(userId).setValue(newUser);
+
                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                     finish();
