@@ -26,9 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editName, editUsername;
     Button buttonReg;
     FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    DatabaseReference reference;
     ProgressBar progressBar;
     TextView textView;
 
@@ -49,6 +51,10 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editName = findViewById(R.id.name);
+        editUsername = findViewById(R.id.username);
+
+
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
@@ -64,9 +70,18 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick (View view){
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password;
-                email = String.valueOf(editTextEmail.getText());
-                password = String.valueOf(editTextPassword.getText());
+
+                database = FirebaseDatabase.getInstance();
+                reference = database.getReference("users");
+
+                String name = editName.getText().toString();
+                String username = editUsername.getText().toString();
+                String email = editTextEmail.getText().toString();
+                String password = editTextPassword.getText().toString();
+
+//                String email, password;
+//                email = String.valueOf(editTextEmail.getText());
+//                password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
@@ -74,6 +89,16 @@ public class Register extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(name)){
+                    Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(username)){
+                    Toast.makeText(Register.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -87,16 +112,16 @@ public class Register extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                     //add user, email, name to database
                                     String userId = mAuth.getCurrentUser().getUid();
-                                    String userName = "temp";
-
+//
                                     DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-                                    User newUser = new User(userName, email);
-                                    usersRef.child(userId).setValue(newUser);
+                                    User user = new User(name, username, email, password);
+                                    usersRef.child(userId).setValue(user);
 
                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                     finish();
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",
