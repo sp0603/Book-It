@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="my_primary">#96B6C5</color>
+    <color name="my_secondary"> #ADC4CE</color>
+    
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <color name="sand">#EEE0C9</color>
+    <color name="light_gray">#F1F0E8</color>
+
 </resources>
