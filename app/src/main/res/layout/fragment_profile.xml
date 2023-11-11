@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3F51B5"
+    android:theme="@style/Theme.Scheduling"
+    android:padding="15dp"
     tools:context=".ProfileFragment">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/usernamepicture">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameDisplay"
+            android:text="@string/username"
+            android:textSize="30sp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_icon"
+            android:contentDescription="@string/change_user_profile"
+            android:background="@drawable/circle_button_background"
+            android:layout_marginTop="19dp"/>
+
+    </LinearLayout>
 
     <TextView
-        android:textSize="48sp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:text="Profile Page" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/events_created"
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="140dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/friends"
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="290dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="330dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/circle_button_background"
+            android:contentDescription="@string/settings"
+            android:src="@drawable/settings_icon" />
+
+    </LinearLayout>
+
+
 
 </FrameLayout>
