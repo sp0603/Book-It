@@ -65,7 +65,7 @@ public class AddFriend extends AppCompatActivity {
                                 //add to friends of current user
                                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 friendsRef.child(currentUserId).child(userId).setValue(userName);
-
+                                // confirmation of friend being added
                                 Toast.makeText(AddFriend.this, "Friend added", Toast.LENGTH_SHORT).show();
                                 finish();
                             }

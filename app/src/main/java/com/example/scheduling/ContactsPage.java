@@ -1,30 +1,33 @@
 package com.example.scheduling;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 
 public class ContactsPage extends Fragment {
-    TextView textview;
-    ImageButton imgButton;
 
-    ListView listView;
-    ArrayList<ListViewUser> userArrayList;
-    private ListItemAdapter adapter;
+    DatabaseReference databaseReference;
+    ArrayList<ListViewUser> friendsList;
+    ListItemAdapter listItemAdapter;
+
     public ContactsPage() {
         // Required empty public constructor
     }
@@ -35,59 +38,49 @@ public class ContactsPage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts_page, container, false);
 
-        textview = view.findViewById(R.id.addFriendText);
-        imgButton = view.findViewById(R.id.imageButton2);
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("friends")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        imgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), AddFriend.class);
-                startActivity(intent);
-            }
-        });
+        friendsList = new ArrayList<>();
+        listItemAdapter = new ListItemAdapter(friendsList, getContext());
 
-        //1- AdapterView: a ListView
-        listView = view.findViewById(R.id.listview);
+        ListView listViewUsers = view.findViewById(R.id.listview);
+        listViewUsers.setAdapter(listItemAdapter);
 
-        //2- Data Source: ArrayList<User>
-        userArrayList = new ArrayList<>();
+        databaseReference = databaseRef;
 
-        ListViewUser user1 = new ListViewUser("Joe Smith", "sample text", R.drawable.profileimg);
-        ListViewUser user2 = new ListViewUser("Kara Adams", "sample text", R.drawable.profileimg);
-        ListViewUser user3 = new ListViewUser("Jessica Lee", "sample text", R.drawable.profileimg);
-        ListViewUser user4 = new ListViewUser("Hailey Cardenas", "sample text", R.drawable.profileimg);
-        ListViewUser user5 = new ListViewUser("Andrew Ortega", "sample text", R.drawable.profileimg);
-        ListViewUser user6 = new ListViewUser("Victor Jarvis", "sample text", R.drawable.profileimg);
-        ListViewUser user7 = new ListViewUser("Matthew Beck", "sample text", R.drawable.profileimg);
-        ListViewUser user8 = new ListViewUser("Mason Green", "sample text", R.drawable.profileimg);
-        ListViewUser user9 = new ListViewUser("Breanna Fox", "sample text", R.drawable.profileimg);
-
-
-        userArrayList.add(user1);
-        userArrayList.add(user2);
-        userArrayList.add(user3);
-        userArrayList.add(user4);
-        userArrayList.add(user5);
-        userArrayList.add(user6);
-        userArrayList.add(user7);
-        userArrayList.add(user8);
-        userArrayList.add(user9);
-
-        //Adapter:
-        adapter = new ListItemAdapter(userArrayList, requireContext());
-        listView.setAdapter(adapter);
+        getFriends();
 
         //handling click events
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toast message will pop up upon clicking on a list item
-                // will change later to open up that user's profile?
                 Toast.makeText(requireContext(), "TEST", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ///
         return view;
+    }
+    private void getFriends() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                friendsList.clear();
+                for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
+                    String friendName = friendSnapshot.getValue(String.class);
+
+                    if (friendName != null) {
+                        friendsList.add(new ListViewUser(friendName));
+                    }
+                }
+                listItemAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // handle errors here
+            }
+        });
     }
 }
