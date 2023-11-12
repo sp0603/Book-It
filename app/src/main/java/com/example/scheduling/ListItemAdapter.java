@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
     //using layouts = MyCustomAdapter
-    //using custom objects = extends ArrayAdapter<User>
+    //using custom objects = extends ArrayAdapter<ListViewUser>
     private ArrayList<ListViewUser> userArrayList;
     Context context;
 
