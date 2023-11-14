@@ -9,4 +9,8 @@
     <string name="logout">Logout</string>
     <string name="username">Username</string>
     <string name="fullname">Full Name</string>
+    <string name="change_user_profile">Change user profile</string>
+    <string name="settings">settings</string>
+    <string name="events_created">Events Created</string>
+    <string name="friends">Friends</string>
 </resources>
