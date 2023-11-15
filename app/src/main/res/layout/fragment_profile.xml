@@ -27,7 +27,8 @@
             android:src="@drawable/image_icon"
             android:contentDescription="@string/change_user_profile"
             android:background="@drawable/circle_button_background"
-            android:layout_marginTop="19dp"/>
+            android:layout_marginTop="19dp"
+            android:id="@+id/profileButton"/>
 
     </LinearLayout>
 
@@ -72,7 +73,8 @@
             android:layout_marginTop="1dp"
             android:background="@drawable/circle_button_background"
             android:contentDescription="@string/settings"
-            android:src="@drawable/settings_icon" />
+            android:src="@drawable/settings_icon"
+            android:id="@+id/settingButton"/>
 
     </LinearLayout>
 
