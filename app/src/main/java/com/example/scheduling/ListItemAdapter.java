@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
     //               an item layout, so that they dont need to be repeatedly
     //               looked up during scrolling
     private static class MyViewHolder{
+        ImageView profilePicture;
         TextView name;
     }
 
@@ -53,6 +57,7 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
             );
             // finding Views
             myViewHolder.name = convertView.findViewById(R.id.user_name);
+            myViewHolder.profilePicture = convertView.findViewById(R.id.profile_picture);
 
             result = convertView;
 
@@ -62,7 +67,10 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
             myViewHolder = (MyViewHolder) convertView.getTag();
             result = convertView;
         }
-
+        if (listViewUser.getProfilePictureUrl() != null && !listViewUser.getProfilePictureUrl().isEmpty()) {
+            String fullUrl = listViewUser.getProfilePictureUrl();
+            Picasso.get().load(fullUrl).into(myViewHolder.profilePicture);
+        }
         // getting data from the model class
         if (listViewUser != null) {
             myViewHolder.name.setText(listViewUser.getName());

@@ -62,9 +62,12 @@ public class AddFriend extends AppCompatActivity {
                             for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                                 String userId = userSnapshot.getKey();
                                 String userName = userSnapshot.child("name").getValue(String.class);
+                                String userProfilePictureUrl = userSnapshot.child("profilePictureUrl").getValue(String.class);
                                 //add to friends of current user
                                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                friendsRef.child(currentUserId).child(userId).setValue(userName);
+                                friendsRef.child(currentUserId).child(userId).child("name").setValue(userName);
+                                friendsRef.child(currentUserId).child(userId).child("userProfilePictureUrl").setValue(userProfilePictureUrl);
+
                                 // confirmation of friend being added
                                 Toast.makeText(AddFriend.this,
                                         "Friend added",

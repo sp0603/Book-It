@@ -87,7 +87,6 @@ public class ContactsPage extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
         return view;
     }
     private void getFriends() {
@@ -96,10 +95,12 @@ public class ContactsPage extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 friendsList.clear();
                 for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
-                    String friendName = friendSnapshot.getValue(String.class);
+                    String friendUid = friendSnapshot.getKey();
+                    String friendName = friendSnapshot.child("name").getValue(String.class);
+                    String friendProfilePictureUrl = friendSnapshot.child("userProfilePictureUrl").getValue(String.class);
 
-                    if (friendName != null) {
-                        friendsList.add(new ListViewUser(friendName));
+                    if (friendUid != null && friendName != null && friendProfilePictureUrl != null) {
+                        friendsList.add(new ListViewUser(friendName, friendProfilePictureUrl));
                     }
                 }
                 listItemAdapter.notifyDataSetChanged();
@@ -112,7 +113,6 @@ public class ContactsPage extends Fragment {
         });
     }
 }
-
 
 //    // This can be used to retrieve the number of friends of the current user
 //    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
