@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/addFriendEditText"
+        android:id="@+id/removeFriendEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
@@ -15,47 +15,47 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/addFriendEmail"
+            android:id="@+id/removeFriendEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="email"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/addFriendText"
+        android:id="@+id/removeFriendText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginBottom="24dp"
         android:text="Enter Friend's Email"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/addFriendEditText"
+        app:layout_constraintBottom_toTopOf="@+id/removeFriendEditText"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/addFriendButton"
+        android:id="@+id/removeFriendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="296dp"
-        android:text="add friend"
+        android:text="Remove friend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addFriendEditText"
+        app:layout_constraintTop_toBottomOf="@+id/removeFriendEditText"
         app:layout_constraintVertical_bias="0.774" />
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/removeFriendBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="296dp"
         android:text="return"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.273"
+        app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addFriendEditText"
+        app:layout_constraintTop_toBottomOf="@+id/removeFriendEditText"
         app:layout_constraintVertical_bias="0.774" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

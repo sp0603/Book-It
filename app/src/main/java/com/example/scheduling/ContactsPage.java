@@ -26,12 +26,18 @@ import java.util.ArrayList;
 
 public class ContactsPage extends Fragment {
 
-    DatabaseReference databaseReference;
-    ArrayList<ListViewUser> friendsList;
-    ListItemAdapter listItemAdapter;
+    private DatabaseReference databaseReference;
+    private ArrayList<ListViewUser> friendsList;
+    private ListItemAdapter listItemAdapter;
 
     public ContactsPage() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFriends();
     }
 
     @Override
@@ -40,11 +46,20 @@ public class ContactsPage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts_page, container, false);
 
-        ImageButton addFriendButton = view.findViewById(R.id.imageButton2);
+        ImageButton addFriendButton = view.findViewById(R.id.imageButtonAdd);
+        ImageButton removeFriendButton = view.findViewById(R.id.imageButtonRemove);
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddFriend.class);
+                startActivity(intent);
+            }
+        });
+
+        removeFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RemoveFriend.class);
                 startActivity(intent);
             }
         });
@@ -67,7 +82,9 @@ public class ContactsPage extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toast message will pop up upon clicking on a list item
-                Toast.makeText(requireContext(), "TEST", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),
+                        "TEST",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -95,3 +112,20 @@ public class ContactsPage extends Fragment {
         });
     }
 }
+
+
+//    // This can be used to retrieve the number of friends of the current user
+//    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("friends").child(currentUserId);
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//@Override
+//public void onDataChange(@NonNull DataSnapshot snapshot) {
+//        long friendCount = snapshot.getChildrenCount();
+//        textView.setText("friendCount: " + friendCount);
+//        }
+//
+//@Override
+//public void onCancelled(@NonNull DatabaseError error) {
+//        // handle errors
+//        }
+//        });

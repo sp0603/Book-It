@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
@@ -19,25 +21,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class AddFriend extends AppCompatActivity {
+public class RemoveFriend extends AppCompatActivity {
+
     TextInputLayout textInputLayout;
     TextInputEditText emailEditText;
-    Button searchButton;
     Button backButton;
+    Button removeFriendButton;
 
-    public AddFriend() {
+    public RemoveFriend() {
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        setContentView(R.layout.add_friend);
+        setContentView(R.layout.remove_friend);
 
-        textInputLayout = findViewById(R.id.addFriendEditText);
-        emailEditText = textInputLayout.findViewById(R.id.addFriendEmail);
-        searchButton = findViewById(R.id.addFriendButton);
-        backButton = findViewById(R.id.backButton);
+        textInputLayout = findViewById(R.id.removeFriendEditText);
+        emailEditText = textInputLayout.findViewById(R.id.removeFriendEmail);
+        removeFriendButton = findViewById(R.id.removeFriendButton);
+        backButton = findViewById(R.id.removeFriendBackButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,35 +49,46 @@ public class AddFriend extends AppCompatActivity {
             }
         });
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        removeFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailEditText.getText().toString().trim();
 
-                // search for email in db
                 DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
                 DatabaseReference friendsRef = FirebaseDatabase.getInstance().getReference("friends");
-                usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                usersRef.orderByChild("email").equalTo(email)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //email is in database
                         if (snapshot.exists()) {
-                            //email is registered in database
                             for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                                 String userId = userSnapshot.getKey();
-                                String userName = userSnapshot.child("name").getValue(String.class);
-                                //add to friends of current user
+
+                                //remove friend
                                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                friendsRef.child(currentUserId).child(userId).setValue(userName);
-                                // confirmation of friend being added
-                                Toast.makeText(AddFriend.this,
-                                        "Friend added",
-                                        Toast.LENGTH_SHORT).show();
-                                finish();
+                                friendsRef.child(currentUserId).child(userId).removeValue()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(RemoveFriend.this,
+                                                "Friend Removed",
+                                                Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(RemoveFriend.this,
+                                                        "Failed to Remove Friend",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             }
                         }
                         else {
-                            //email not registered in database
-                            Toast.makeText(AddFriend.this,
+                            Toast.makeText(RemoveFriend.this,
                                     "Email Not Found",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -82,7 +96,7 @@ public class AddFriend extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(AddFriend.this,
+                        Toast.makeText(RemoveFriend.this,
                                 "ERROR",
                                 Toast.LENGTH_SHORT).show();
                     }
