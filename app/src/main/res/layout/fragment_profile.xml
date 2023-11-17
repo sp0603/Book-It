@@ -22,9 +22,9 @@
             android:textSize="30sp"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_circle"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/circle_button_background"
             android:src="@drawable/image_icon"
             android:layout_marginTop="19dp"
             android:id="@+id/profileButton"/>
