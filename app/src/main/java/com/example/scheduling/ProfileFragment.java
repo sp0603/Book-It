@@ -49,6 +49,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profilebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TestPfpUpload.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
 
     }
