@@ -17,11 +17,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Settings extends AppCompatActivity {
+    Button userButton;
+    Button passwordButton;
 
     Button returnbutton;
-    Button userButton;
     Button updateButton;
+
     EditText usernameEditText;
+    EditText passwordEditText;
+
     DatabaseReference databaseReference;
 
     @Override
@@ -41,6 +45,7 @@ public class Settings extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
         userButton = findViewById(R.id.usernameTextview);
+        passwordButton = findViewById(R.id.passwordTextView);
 
         userButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -53,6 +58,13 @@ public class Settings extends AppCompatActivity {
                 usernameEditText.setText(userButton.getText().toString());
                 layout.addView(usernameEditText);
 
+                returnbutton = new Button(Settings.this);
+                returnbutton.setText("Return");
+                returnbutton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {finish();}
+                });
+
                 updateButton = new Button(Settings.this);
                 updateButton.setText("Update");
                 updateButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +75,43 @@ public class Settings extends AppCompatActivity {
                     }
                 });
                 layout.addView(updateButton);
+                layout.addView(returnbutton);
 
                 setContentView(layout);
+            }
+        });
+
+        passwordButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                LinearLayout layout = new LinearLayout(Settings.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                passwordEditText = new EditText(Settings.this);
+                passwordEditText.setText(passwordButton.getText().toString());
+                layout.addView(passwordEditText);
+
+                returnbutton = new Button(Settings.this);
+                returnbutton.setText("Return");
+                returnbutton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {finish();}
+                });
+
+                updateButton = new Button(Settings.this);
+                updateButton.setText("Update");
+                updateButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        updatePassword(passwordEditText.getText().toString());
+                        {finish();}
+                    }
+                });
+                layout.addView(updateButton);
+                layout.addView(returnbutton);
+
+                setContentView(layout);
+
             }
         });
     }
@@ -85,11 +132,11 @@ public class Settings extends AppCompatActivity {
         setContentView(originalLayout);
     }
 
-    private void updateEmail(String newEmail){
-        databaseReference.child("email").setValue(newEmail);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View originalLayout = inflater.inflate(R.layout.activity_settings, null);
-        setContentView(originalLayout);
-    }
+//    private void updateEmail(String newEmail){
+//        databaseReference.child("email").setValue(newEmail);
+//
+//        LayoutInflater inflater = getLayoutInflater();
+//        View originalLayout = inflater.inflate(R.layout.activity_settings, null);
+//        setContentView(originalLayout);
+//    }
 }
