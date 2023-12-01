@@ -48,4 +48,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")
+    // To use constraintlayout in compose
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13")
 }

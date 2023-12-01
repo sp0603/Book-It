@@ -46,8 +46,11 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
     ImageView profilebutton;
     ImageButton settingbutton;
-    TextView usernameText;
+    TextView usernameDisplay;
     private ActivityResultLauncher<Intent> galleryLauncher;
+
+    DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -62,8 +65,33 @@ public class ProfileFragment extends Fragment {
 
         profilebutton = view.findViewById(R.id.profileButton);
         settingbutton = view.findViewById(R.id.settingButton);
-        usernameText = view.findViewById(R.id.usernameDisplay);
+        usernameDisplay = view.findViewById(R.id.usernameDisplay);
 
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(currentUser != null){
+            String uid = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild("username")){
+                        String username = dataSnapshot.child("username").getValue(String.class);
+
+                        usernameDisplay.setText(username);
+                    } else {
+                        usernameDisplay.setText("Default Display Name");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handling errors soon.
+                }
+            });
+        }
 //        return inflater.inflate(R.layout.fragment_profile, container, false);
 
         settingbutton.setOnClickListener(view1 -> {
@@ -84,7 +112,6 @@ public class ProfileFragment extends Fragment {
 
         profilebutton.setOnClickListener(v -> openGallery());
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null){
             String currentUserId = currentUser.getUid();
             DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
