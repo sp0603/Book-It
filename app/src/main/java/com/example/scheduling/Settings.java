@@ -140,7 +140,7 @@ public class Settings extends AppCompatActivity {
                 updateButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
-                        updatePassword(passwordEditText.getText().toString());
+                        updateEmail(emailEditText.getText().toString());
                         {finish();}
                     }
                 });
