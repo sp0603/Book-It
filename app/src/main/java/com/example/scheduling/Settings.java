@@ -19,12 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Settings extends AppCompatActivity {
     Button userButton;
     Button passwordButton;
+    Button emailButton;
 
     Button returnbutton;
     Button updateButton;
 
     EditText usernameEditText;
     EditText passwordEditText;
+    EditText emailEditText;
 
     DatabaseReference databaseReference;
 
@@ -46,6 +48,7 @@ public class Settings extends AppCompatActivity {
 
         userButton = findViewById(R.id.usernameTextview);
         passwordButton = findViewById(R.id.passwordTextView);
+        emailButton = findViewById(R.id.emailTextView);
 
         userButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -114,6 +117,39 @@ public class Settings extends AppCompatActivity {
 
             }
         });
+
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout layout = new LinearLayout(Settings.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                emailEditText = new EditText(Settings.this);
+                emailEditText.setText(emailButton.getText().toString());
+                layout.addView(emailEditText);
+
+                returnbutton = new Button(Settings.this);
+                returnbutton.setText("Return");
+                returnbutton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {finish();}
+                });
+
+                updateButton = new Button(Settings.this);
+                updateButton.setText("Update");
+                updateButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        updatePassword(passwordEditText.getText().toString());
+                        {finish();}
+                    }
+                });
+                layout.addView(updateButton);
+                layout.addView(returnbutton);
+
+                setContentView(layout);
+            }
+        });
     }
 
     private void updateUsername(String newUsername){
@@ -132,11 +168,11 @@ public class Settings extends AppCompatActivity {
         setContentView(originalLayout);
     }
 
-//    private void updateEmail(String newEmail){
-//        databaseReference.child("email").setValue(newEmail);
-//
-//        LayoutInflater inflater = getLayoutInflater();
-//        View originalLayout = inflater.inflate(R.layout.activity_settings, null);
-//        setContentView(originalLayout);
-//    }
+    private void updateEmail(String newEmail){
+        databaseReference.child("email").setValue(newEmail);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View originalLayout = inflater.inflate(R.layout.activity_settings, null);
+        setContentView(originalLayout);
+    }
 }
