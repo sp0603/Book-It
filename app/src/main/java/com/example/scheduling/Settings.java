@@ -4,6 +4,7 @@ package com.example.scheduling;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class Settings extends AppCompatActivity {
 
     Button returnbutton;
     Button updateButton;
+    Button logOutButton;
 
     EditText usernameEditText;
     EditText passwordEditText;
@@ -148,6 +150,18 @@ public class Settings extends AppCompatActivity {
                 layout.addView(returnbutton);
 
                 setContentView(layout);
+            }
+        });
+
+        logOutButton = findViewById(R.id.logOutButton);
+
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
