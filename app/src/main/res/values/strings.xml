@@ -20,4 +20,5 @@
     <string name="change_username_text">Change Username</string>
     <string name="change_password_text">Change Password</string>
     <string name="change_email_text">Change Email</string>
+    <string name="log_out">Log Out</string>
 </resources>
