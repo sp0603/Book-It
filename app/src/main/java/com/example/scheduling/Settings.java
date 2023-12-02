@@ -2,11 +2,9 @@ package com.example.scheduling;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,10 +37,7 @@ public class Settings extends AppCompatActivity {
 
         returnbutton = findViewById(R.id.backProfileButton);
 
-        returnbutton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {finish();}
-        });
+        returnbutton.setOnClickListener(view -> finish());
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String uid = firebaseAuth.getCurrentUser().getUid();
@@ -52,117 +47,87 @@ public class Settings extends AppCompatActivity {
         passwordButton = findViewById(R.id.passwordTextView);
         emailButton = findViewById(R.id.emailTextView);
 
-        userButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
+        userButton.setOnClickListener(v -> {
 
-                LinearLayout layout = new LinearLayout(Settings.this);
-                layout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout layout = new LinearLayout(Settings.this);
+            layout.setOrientation(LinearLayout.VERTICAL);
 
-                usernameEditText = new EditText(Settings.this);
-                usernameEditText.setText(userButton.getText().toString());
-                layout.addView(usernameEditText);
+            usernameEditText = new EditText(Settings.this);
+            usernameEditText.setText(userButton.getText().toString());
+            layout.addView(usernameEditText);
 
-                returnbutton = new Button(Settings.this);
-                returnbutton.setText("Return");
-                returnbutton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {finish();}
-                });
+            returnbutton = new Button(Settings.this);
+            returnbutton.setText("Return");
+            returnbutton.setOnClickListener(view -> finish());
 
-                updateButton = new Button(Settings.this);
-                updateButton.setText("Update");
-                updateButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v){
-                        updateUsername(usernameEditText.getText().toString());
-                        {finish();}
-                    }
-                });
-                layout.addView(updateButton);
-                layout.addView(returnbutton);
+            updateButton = new Button(Settings.this);
+            updateButton.setText("Update");
+            updateButton.setOnClickListener(v1 -> {
+                updateUsername(usernameEditText.getText().toString());
+                {finish();}
+            });
+            layout.addView(updateButton);
+            layout.addView(returnbutton);
 
-                setContentView(layout);
-            }
+            setContentView(layout);
         });
 
-        passwordButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                LinearLayout layout = new LinearLayout(Settings.this);
-                layout.setOrientation(LinearLayout.VERTICAL);
+        passwordButton.setOnClickListener(v -> {
+            LinearLayout layout = new LinearLayout(Settings.this);
+            layout.setOrientation(LinearLayout.VERTICAL);
 
-                passwordEditText = new EditText(Settings.this);
-                passwordEditText.setText(passwordButton.getText().toString());
-                layout.addView(passwordEditText);
+            passwordEditText = new EditText(Settings.this);
+            passwordEditText.setText(passwordButton.getText().toString());
+            layout.addView(passwordEditText);
 
-                returnbutton = new Button(Settings.this);
-                returnbutton.setText("Return");
-                returnbutton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {finish();}
-                });
+            returnbutton = new Button(Settings.this);
+            returnbutton.setText("Return");
+            returnbutton.setOnClickListener(view -> finish());
 
-                updateButton = new Button(Settings.this);
-                updateButton.setText("Update");
-                updateButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view){
-                        updatePassword(passwordEditText.getText().toString());
-                        {finish();}
-                    }
-                });
-                layout.addView(updateButton);
-                layout.addView(returnbutton);
+            updateButton = new Button(Settings.this);
+            updateButton.setText("Update");
+            updateButton.setOnClickListener(view -> {
+                updatePassword(passwordEditText.getText().toString());
+                {finish();}
+            });
+            layout.addView(updateButton);
+            layout.addView(returnbutton);
 
-                setContentView(layout);
+            setContentView(layout);
 
-            }
         });
 
-        emailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout layout = new LinearLayout(Settings.this);
-                layout.setOrientation(LinearLayout.VERTICAL);
+        emailButton.setOnClickListener(v -> {
+            LinearLayout layout = new LinearLayout(Settings.this);
+            layout.setOrientation(LinearLayout.VERTICAL);
 
-                emailEditText = new EditText(Settings.this);
-                emailEditText.setText(emailButton.getText().toString());
-                layout.addView(emailEditText);
+            emailEditText = new EditText(Settings.this);
+            emailEditText.setText(emailButton.getText().toString());
+            layout.addView(emailEditText);
 
-                returnbutton = new Button(Settings.this);
-                returnbutton.setText("Return");
-                returnbutton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {finish();}
-                });
+            returnbutton = new Button(Settings.this);
+            returnbutton.setText("Return");
+            returnbutton.setOnClickListener(view -> finish());
 
-                updateButton = new Button(Settings.this);
-                updateButton.setText("Update");
-                updateButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view){
-                        updateEmail(emailEditText.getText().toString());
-                        {finish();}
-                    }
-                });
-                layout.addView(updateButton);
-                layout.addView(returnbutton);
+            updateButton = new Button(Settings.this);
+            updateButton.setText("Update");
+            updateButton.setOnClickListener(view -> {
+                updateEmail(emailEditText.getText().toString());
+                {finish();}
+            });
+            layout.addView(updateButton);
+            layout.addView(returnbutton);
 
-                setContentView(layout);
-            }
+            setContentView(layout);
         });
 
         logOutButton = findViewById(R.id.logOutButton);
 
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        logOutButton.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
