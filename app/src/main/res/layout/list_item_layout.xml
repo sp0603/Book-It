@@ -5,16 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+<!--    <ImageView-->
+<!--        android:id="@+id/profile_picture"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:contentDescription="Profile Picture"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/user_name"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     <ImageView
-        android:id="@+id/profile_picture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
+        android:id="@+id/profilePic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/circle_button_background"
+        android:src="@drawable/image_icon"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="Profile Picture"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/user_name"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,12 +36,11 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="28dp"
         android:text="Firstname Lastname"
         android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.758"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--    <TextView-->

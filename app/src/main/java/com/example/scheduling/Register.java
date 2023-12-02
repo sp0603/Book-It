@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -118,6 +117,7 @@ public class Register extends AppCompatActivity {
 
                                     User user = new User(name, username, email, password);
                                     usersRef.child(userId).setValue(user);
+                                    usersRef.child(userId).child("profilePictureUrl").setValue("https://firebasestorage.googleapis.com/v0/b/scheduling-74ad0.appspot.com/o/user_profile_pictures%2Fdefault_pfp.png?alt=media&token=8d91ba73-3d95-4f43-852b-8ab6b884dc78");
 
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);

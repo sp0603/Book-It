@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -186,7 +187,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private static class CircleTransformation implements Transformation {
+    public static class CircleTransformation implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
