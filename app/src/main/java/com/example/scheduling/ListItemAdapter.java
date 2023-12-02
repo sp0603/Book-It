@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -57,7 +58,7 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
             );
             // finding Views
             myViewHolder.name = convertView.findViewById(R.id.user_name);
-            myViewHolder.profilePicture = convertView.findViewById(R.id.profile_picture);
+            myViewHolder.profilePicture = convertView.findViewById(R.id.profilePic);
 
             result = convertView;
 
@@ -69,7 +70,9 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
         }
         if (listViewUser.getProfilePictureUrl() != null && !listViewUser.getProfilePictureUrl().isEmpty()) {
             String fullUrl = listViewUser.getProfilePictureUrl();
-            Picasso.get().load(fullUrl).into(myViewHolder.profilePicture);
+            Picasso.get().load(fullUrl)
+                    .fit().centerCrop().transform(new ProfileFragment.CircleTransformation())
+                    .into(myViewHolder.profilePicture);
         }
         // getting data from the model class
         if (listViewUser != null) {
