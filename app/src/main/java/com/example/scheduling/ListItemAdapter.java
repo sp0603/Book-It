@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -75,9 +74,7 @@ public class ListItemAdapter extends ArrayAdapter<ListViewUser> {
                     .into(myViewHolder.profilePicture);
         }
         // getting data from the model class
-        if (listViewUser != null) {
-            myViewHolder.name.setText(listViewUser.getName());
-        }
+        myViewHolder.name.setText(listViewUser.getName());
         return result;
     }
 }
