@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment {
     ImageView profilebutton;
     ImageButton settingbutton;
     TextView usernameDisplay;
+    TextView friendCountDisplay;
     private ActivityResultLauncher<Intent> galleryLauncher;
 
     DatabaseReference databaseReference;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment {
         profilebutton = view.findViewById(R.id.profileButton);
         settingbutton = view.findViewById(R.id.settingButton);
         usernameDisplay = view.findViewById(R.id.usernameDisplay);
+        friendCountDisplay = view.findViewById(R.id.friendCountDisplay);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -93,6 +95,32 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("friends").child(uid);
+
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Get the count of friends
+                        long friendCount = dataSnapshot.getChildrenCount();
+
+                        // Display the friend count
+                        friendCountDisplay.setText("" + friendCount);
+                    } else {
+                        friendCountDisplay.setText("0");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors if needed
+                }
+            });
+        }
+
 //        return inflater.inflate(R.layout.fragment_profile, container, false);
 
         settingbutton.setOnClickListener(view1 -> {
