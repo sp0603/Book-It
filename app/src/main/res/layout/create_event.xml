@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:theme="@style/Theme.Scheduling"
+    android:background="@color/my_primary"
+    tools:context=".CreateEvent">
+
+    <TextView
+        android:text="@string/create_event_text"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/empty_tall_divider">
+
+        <EditText
+            android:id="@+id/event_name"
+            android:hint="@string/event_name"
+            android:autofillHints="Event Name"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"/>
+
+        <EditText
+            android:id="@+id/event_date"
+            android:hint="@string/event_date"
+            android:autofillHints="Date"
+            android:inputType="date"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"/>
+
+        <EditText
+            android:id="@+id/event_address"
+            android:hint="@string/event_address"
+            android:autofillHints="postalAddress"
+            android:inputType="textPostalAddress"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"/>
+
+        <EditText
+            android:id="@+id/event_description"
+            android:hint="@string/event_description"
+            android:autofillHints="Description"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <EditText
+            android:id="@+id/event_start_time"
+            android:hint="@string/event_start_time"
+            android:autofillHints="time"
+            android:inputType="time"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" />
+
+        <EditText
+            android:id="@+id/event_end_time"
+            android:hint="@string/event_end_time"
+            android:autofillHints="time"
+            android:inputType="time"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:elevation="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/invite_friends_button"
+            android:text="@string/invite_friends_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/create_event_button"
+            android:text="@string/create_event_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</LinearLayout>

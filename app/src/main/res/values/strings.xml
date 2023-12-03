@@ -14,4 +14,16 @@
     <string name="events_created">Events Created</string>
     <string name="friends">Friends</string>
     <string name="returnback">returnback\n</string>
+    //create event page strings
+    <string name="create_event_text">Create New Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Date</string>
+    <string name="event_start_time">Start Time</string>
+    <string name="event_end_time">End Time</string>
+    <string name="event_address">Location</string>
+    <string name="event_description">Description</string>
+    <string name="invite_friends_button">Invite Friends</string>
+    <string name="create_event_button">Create Event</string>
+    
+    <string name="title_activity_create_event">Create Event</string>
 </resources>
