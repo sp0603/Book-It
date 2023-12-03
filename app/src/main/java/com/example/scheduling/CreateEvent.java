@@ -96,21 +96,22 @@ public class CreateEvent extends Fragment {
         friendsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<String> friendNames = new ArrayList<>();
+                if (isAdded()) {
+                    List<String> friendNames = new ArrayList<>();
 
-                for (DataSnapshot friendsnap : snapshot.getChildren()) {
-                    String name = friendsnap.child("name").getValue(String.class);
-                    friendNames.add(name);
+                    for (DataSnapshot friendsnap : snapshot.getChildren()) {
+                        String name = friendsnap.child("name").getValue(String.class);
+                        friendNames.add(name);
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                            android.R.layout.simple_dropdown_item_1line, friendNames);
+                    addFriendACTextView.setAdapter(adapter);
+                    addFriendACTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                 }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                        android.R.layout.simple_dropdown_item_1line, friendNames);
-                addFriendACTextView.setAdapter(adapter);
-                addFriendACTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled (@NonNull DatabaseError error){
                 //errors
             }
         });
@@ -122,17 +123,32 @@ public class CreateEvent extends Fragment {
                     Toast.makeText(getContext(),
                             "Enter Event Name",
                             Toast.LENGTH_SHORT).show();
-                }
-
+                } else if (TextUtils.isEmpty(selectedDateTextView.getText().toString())) {
+                    Toast.makeText(getContext(),
+                            "Enter Date",
+                            Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(starttimeTextView.getText().toString())) {
+                    Toast.makeText(getContext(),
+                            "Enter Start Time",
+                            Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(endtimeTextView.getText().toString())) {
+                    Toast.makeText(getContext(),
+                            "",
+                            Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(notesText.getText().toString())) {
+                    Toast.makeText(getContext(),
+                            "Enter Notes",
+                            Toast.LENGTH_SHORT).show();
+                } else {
                     //save event
                     String eventName = eventNameTextView.getText().toString();
-//                String eventDate = selectedDateTextView.getText().toString();
-//                String startTime = starttimeTextView.getText().toString();
-//                String endTime = endtimeTextView.getText().toString();
-//                String notes = notesText.getText().toString();
-//                String attendingFriends = addFriendACTextView.getText().toString();
-//
-//                String[] attendingFriendsArr = attendingFriends.split(", ");
+                    String eventDate = selectedDateTextView.getText().toString();
+                    String startTime = starttimeTextView.getText().toString();
+                    String endTime = endtimeTextView.getText().toString();
+                    String notes = notesText.getText().toString();
+                    String attendingFriends = addFriendACTextView.getText().toString();
+
+                    String[] attendingFriendsArr = attendingFriends.split(", ");
 
                     //save event to db
                     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -142,24 +158,45 @@ public class CreateEvent extends Fragment {
                     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference()
                             .child("events").child(currUserId);
                     //create unique key for event
-//                String eventId = eventsRef.push().getKey();
-//
-//                Map<String, Object> eventMap = new HashMap<>();
-//                eventMap.put("Event Name", eventName);
-//                eventMap.put("Date", eventDate);
-//                eventMap.put("Start Time", startTime);
-//                eventMap.put("End Time", endTime);
-//                eventMap.put("Notes", notes);
-//
-//                eventsRef.child(eventId).setValue(eventMap);
+                    String eventId = eventsRef.push().getKey();
 
-                    eventsRef.child("eventId").child("Event Name").setValue(eventName);
+                    eventsRef.child(eventId).child("Name").setValue(eventName);
+                    eventsRef.child(eventId).child("Date").setValue(eventDate);
+                    eventsRef.child(eventId).child("Start Time").setValue(startTime);
+                    eventsRef.child(eventId).child("End Time").setValue(endTime);
+                    eventsRef.child(eventId).child("Notes").setValue(notes);
 
+                    for (String friendName : attendingFriendsArr) {
+                        DatabaseReference friendsRef = FirebaseDatabase.getInstance()
+                                .getReference().child("friends").child(currUserId);
+                        friendsRef.orderByChild("name").equalTo(friendName)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
+                                            String friendId = friendSnapshot.getKey();
 
-
+                                            DatabaseReference friendEventsRef = FirebaseDatabase.getInstance()
+                                                    .getReference().child("users").child(friendId).child("events");
+                                            friendEventsRef.child(eventId).setValue("attending");
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        //
+                                    }
+                                });
+                    }
+                    Toast.makeText(getContext(), "Event Created", Toast.LENGTH_SHORT).show();
+                    starttimeTextView.setText("0:00");
+                    endtimeTextView.setText("0:00");
+                    selectedDateTextView.setText("MM/DD/YYYY");
+                    eventNameTextView.setText("");
+                    notesText.setText("");
+                    addFriendACTextView.setText("");
+                }
             }
         });
-
 
         ///////////////////////////////////////////////////////////////////
         endtimeButton.setOnClickListener(new View.OnClickListener(){

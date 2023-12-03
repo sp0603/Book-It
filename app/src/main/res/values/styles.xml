@@ -6,6 +6,12 @@
         <item name="android:background">@color/white</item>
     </style>
     <style
+        name="whitebutton"
+        parent="Widget.AppCompat.Button.Colored">
+        <item
+            name="android:background">@color/white</item>
+    </style>
+    <style
         name="CircleButton"
         parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/circle_button_background</item>
