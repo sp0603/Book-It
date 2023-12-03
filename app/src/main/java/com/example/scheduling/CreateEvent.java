@@ -1,5 +1,6 @@
 package com.example.scheduling;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +29,11 @@ public class CreateEvent extends Fragment {
     TextView starttimeTextView;
     TextView endtimeTextView;
 
+    TextView selectedDateTextView;
+    Button selectDateButton;
+
+    Button addFriendButton;
+
     public CreateEvent() {
         // Required empty public constructor
     }
@@ -36,7 +44,7 @@ public class CreateEvent extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_create_event, container, false);
 
-
+        // start time and date
         starttimeButton = view.findViewById(R.id.startTimeButton);
         endtimeButton = view.findViewById(R.id.endTimeButton);
 
@@ -54,10 +62,33 @@ public class CreateEvent extends Fragment {
             }
         });
 
+        // selected day
+
+        selectedDateTextView = view.findViewById(R.id.dateDisplay);
+        selectDateButton = view.findViewById(R.id.eventDate);
+
+        selectDateButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                onPickDateClick(view);
+            }
+        });
+
+        addFriendButton = view.findViewById(R.id.addFriendEvent);
+
+        addFriendButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                // fill in the gaps
+            }
+        });
+
         return view;
     }
     // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_create_event, container, false);
+
+    //start time and end time
 
     private void showTimePickerDialog(final boolean isStartTime){
         final Calendar calendar = Calendar.getInstance();
@@ -111,6 +142,28 @@ public class CreateEvent extends Fragment {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         return calendar.getTimeInMillis();
+    }
+
+    // selected day, month, and year
+
+    public void onPickDateClick(View view){
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String selectDate = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
+                        selectedDateTextView.setText(selectDate);
+                    }
+                },
+                year, month, day);
+
+        datePickerDialog.show();
     }
 }
 
