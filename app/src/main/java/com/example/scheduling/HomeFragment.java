@@ -75,6 +75,8 @@ public class HomeFragment extends Fragment {
                     if(friendUid != null && eventUid != null && eventName != null && eventDate != null && eventStartTime != null && eventEndTime != null && eventNotes != null) {
 //                        eventList.add(new ListViewUser(eventName, eventDate,eventStartTime, eventEndTime, eventNotes));
 
+                        // problem on this line
+
                     }
                 }
                 listItemAdapter.notifyDataSetChanged();
