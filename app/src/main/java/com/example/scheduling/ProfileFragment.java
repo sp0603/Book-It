@@ -52,6 +52,7 @@ public class ProfileFragment extends Fragment {
     private ActivityResultLauncher<Intent> galleryLauncher;
 
     DatabaseReference databaseReference;
+    TextView friendcount;
     FirebaseAuth mAuth;
 
     public ProfileFragment() {
@@ -72,6 +73,21 @@ public class ProfileFragment extends Fragment {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //retrieve the number of friends of the current user
+        String currentUserId = currentUser.getUid();
+        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference().child("friends").child(currentUserId);
+        dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Long friendCount = snapshot.getChildrenCount();
+                friendcount.setText(friendCount + "");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //
+            }
+        });
 
         if(currentUser != null){
             String uid = currentUser.getUid();
@@ -142,7 +158,7 @@ public class ProfileFragment extends Fragment {
         profilebutton.setOnClickListener(v -> openGallery());
 
         if(currentUser != null){
-            String currentUserId = currentUser.getUid();
+//            String currentUserId = currentUser.getUid();
             DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
 
             ValueEventListener profilePictureListener = new ValueEventListener() {

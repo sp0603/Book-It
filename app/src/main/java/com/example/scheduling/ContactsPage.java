@@ -109,18 +109,3 @@ public class ContactsPage extends Fragment {
         });
     }
 }
-//    // This can be used to retrieve the number of friends of the current user
-//    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("friends").child(currentUserId);
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//@Override
-//public void onDataChange(@NonNull DataSnapshot snapshot) {
-//        long friendCount = snapshot.getChildrenCount();
-//        textView.setText("friendCount: " + friendCount);
-//        }
-//
-//@Override
-//public void onCancelled(@NonNull DatabaseError error) {
-//        // handle errors
-//        }
-//        });
