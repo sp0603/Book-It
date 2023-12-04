@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,20 +43,32 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
     ImageView profilebutton;
     ImageButton settingbutton;
     TextView usernameDisplay;
+    TextView friendCountDisplay;
     private ActivityResultLauncher<Intent> galleryLauncher;
 
     DatabaseReference databaseReference;
-    TextView friendcount;
     FirebaseAuth mAuth;
+    private ArrayList<ListViewEvent> eventList;
+    private ListItemEventAdapter eventListItemAdapter;
+    TextView eventCountDisplay;
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        eventList.clear();
+        getEvents();
     }
 
     @Override
@@ -68,25 +81,25 @@ public class ProfileFragment extends Fragment {
         profilebutton = view.findViewById(R.id.profileButton);
         settingbutton = view.findViewById(R.id.settingButton);
         usernameDisplay = view.findViewById(R.id.usernameDisplay);
-        friendcount = view.findViewById(R.id.friendCount);
+        friendCountDisplay = view.findViewById(R.id.friendCountDisplay);
+        eventCountDisplay = view.findViewById(R.id.textView14);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        //retrieve the number of friends of the current user
-        String currentUserId = currentUser.getUid();
-        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference().child("friends").child(currentUserId);
-        dbReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Long friendCount = snapshot.getChildrenCount();
-                friendcount.setText(friendCount + "");
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //
-            }
-        });
+
+        if (eventList == null) {
+            eventList = new ArrayList<>();
+        }
+        eventListItemAdapter = new ListItemEventAdapter(eventList, getContext());
+
+        ListView listViewEvents = view.findViewById(R.id.eventListView);
+        listViewEvents.setAdapter(eventListItemAdapter);
+
+        eventList.clear();
+
+        getEvents();
+
 
         if(currentUser != null){
             String uid = currentUser.getUid();
@@ -110,6 +123,56 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("friends").child(uid);
+
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Get the count of friends
+                        long friendCount = dataSnapshot.getChildrenCount();
+
+                        // Display the friend count
+                        friendCountDisplay.setText("" + friendCount);
+                    } else {
+                        friendCountDisplay.setText("0");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors if needed
+                }
+            });
+        }
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("events").child(uid);
+
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Get the count of friends
+                        long eventCount = dataSnapshot.getChildrenCount();
+
+                        // Display the friend count
+                        eventCountDisplay.setText("" + eventCount);
+                    } else {
+                        eventCountDisplay.setText("0");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors if needed
+                }
+            });
+        }
+
 //        return inflater.inflate(R.layout.fragment_profile, container, false);
 
         settingbutton.setOnClickListener(view1 -> {
@@ -131,7 +194,7 @@ public class ProfileFragment extends Fragment {
         profilebutton.setOnClickListener(v -> openGallery());
 
         if(currentUser != null){
-//            String currentUserId = currentUser.getUid();
+            String currentUserId = currentUser.getUid();
             DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
 
             ValueEventListener profilePictureListener = new ValueEventListener() {
@@ -162,6 +225,34 @@ public class ProfileFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void getEvents() {
+        String currUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("events")
+                .child(currUserId);
+
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                eventList.clear();
+                for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
+                    String eventName = eventSnapshot.child("Name").getValue(String.class);
+                    String eventStartTime = eventSnapshot.child("Start Time").getValue(String.class);
+                    String eventEndTime = eventSnapshot.child("End Time").getValue(String.class);
+                    String eventDate = eventSnapshot.child("Date").getValue(String.class);
+                    String eventNotes = eventSnapshot.child("Notes").getValue(String.class);
+                    String eventID = "";
+
+                    eventList.add(new ListViewEvent(eventName, eventStartTime, eventEndTime, eventNotes, eventDate, eventID));
+                }
+                eventListItemAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //
+            }
+        });
     }
 
 
