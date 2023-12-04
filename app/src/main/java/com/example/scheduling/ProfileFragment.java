@@ -242,8 +242,9 @@ public class ProfileFragment extends Fragment {
                     String eventEndTime = eventSnapshot.child("End Time").getValue(String.class);
                     String eventDate = eventSnapshot.child("Date").getValue(String.class);
                     String eventNotes = eventSnapshot.child("Notes").getValue(String.class);
+                    String eventID = "";
 
-                    eventList.add(new ListViewEvent(eventName, eventStartTime, eventEndTime, eventNotes, eventDate));
+                    eventList.add(new ListViewEvent(eventName, eventStartTime, eventEndTime, eventNotes, eventDate, eventID));
                 }
                 eventListItemAdapter.notifyDataSetChanged();
             }

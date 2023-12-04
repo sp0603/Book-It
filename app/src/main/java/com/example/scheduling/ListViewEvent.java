@@ -6,13 +6,23 @@ public class ListViewEvent {
     private String endTime;
     private String notes;
     private String eventDate;
+    private String eventID;
 
-    public ListViewEvent(String eventName, String startTime, String endTime, String notes, String eventDate) {
+    public ListViewEvent(String eventName, String startTime, String endTime, String notes, String eventDate, String eventID) {
         this.eventName = eventName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.notes = notes;
         this.eventDate = eventDate;
+        this.eventID = eventID;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
     }
 
     public String getEventName() {

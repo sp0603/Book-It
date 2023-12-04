@@ -8,8 +8,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +31,8 @@ public class HomeFragment extends Fragment {
     private DatabaseReference databaseRef;
     private ArrayList<ListViewEvent> eventList;
     private ListItemEventAdapter eventlistItemAdapter;
+    Button yesButton;
+    Button noButton;
 
 
     public HomeFragment() {
@@ -61,6 +67,30 @@ public class HomeFragment extends Fragment {
 
         getEvents();
 
+        listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                yesButton = new Button(getContext());
+                yesButton.setText("Yes");
+                layout.addView(yesButton);
+                yesButton.setOnClickListener(view1 -> {
+                    {getActivity().finish();}
+                });
+
+                noButton = new Button(getContext());
+                noButton.setText("No");
+                layout.addView(noButton);
+                noButton.setOnClickListener(view2 -> {
+                    deleteEvent(position);
+                });
+
+                getActivity().setContentView(layout);
+            }
+        });
+
         return view;
     }
 
@@ -91,7 +121,7 @@ public class HomeFragment extends Fragment {
                                 String eventNotes = snapshot.child("Notes").getValue(String.class);
 
 
-                                eventList.add(new ListViewEvent(eventName, eventStartTime, eventEndTime, eventNotes, eventDate));
+                                eventList.add(new ListViewEvent(eventName, eventStartTime, eventEndTime, eventNotes, eventDate, eventID));
 
                                 if (eventsProcessed.incrementAndGet() == totalEvents) {
                                     eventlistItemAdapter.notifyDataSetChanged();
@@ -110,5 +140,23 @@ public class HomeFragment extends Fragment {
                 // handle errors here
             }
         });
+    }
+    private void deleteEvent(int position) {
+        if (position >= 0 && position < eventList.size()) {
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            String eventId = eventList.get(position).getEventID();
+
+            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(userId).child("events").child(eventId);
+
+            eventRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    eventList.remove(position);
+                    eventlistItemAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 }
