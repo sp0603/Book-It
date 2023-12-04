@@ -1,5 +1,7 @@
 package com.example.scheduling;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,8 +33,6 @@ public class HomeFragment extends Fragment {
     private DatabaseReference databaseRef;
     private ArrayList<ListViewEvent> eventList;
     private ListItemEventAdapter eventlistItemAdapter;
-    Button yesButton;
-    Button noButton;
 
 
     public HomeFragment() {
@@ -70,24 +70,26 @@ public class HomeFragment extends Fragment {
         listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LinearLayout layout = new LinearLayout(getContext());
-                layout.setOrientation(LinearLayout.VERTICAL);
 
-                yesButton = new Button(getContext());
-                yesButton.setText("Yes");
-                layout.addView(yesButton);
-                yesButton.setOnClickListener(view1 -> {
-                    {getActivity().finish();}
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Decline Event?");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteEvent(position);
+                    }
                 });
 
-                noButton = new Button(getContext());
-                noButton.setText("No");
-                layout.addView(noButton);
-                noButton.setOnClickListener(view2 -> {
-                    deleteEvent(position);
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
                 });
 
-                getActivity().setContentView(layout);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
