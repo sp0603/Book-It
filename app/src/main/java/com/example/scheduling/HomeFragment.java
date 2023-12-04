@@ -8,7 +8,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +32,9 @@ public class HomeFragment extends Fragment {
     private DatabaseReference databaseRef;
     private ArrayList<ListViewEvent> eventList;
     private ListItemEventAdapter eventlistItemAdapter;
+
+    Button yesButton;
+    Button noButton;
 
 
     public HomeFragment() {
@@ -56,6 +64,29 @@ public class HomeFragment extends Fragment {
 
         ListView listViewEvents = view.findViewById(R.id.eventListview);
         listViewEvents.setAdapter(eventlistItemAdapter);
+        listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                yesButton = new Button(getContext());
+                yesButton.setText("Yes");
+                layout.addView(yesButton);
+                yesButton.setOnClickListener(view1 -> {
+                    updateYes();
+                    {getActivity().finish();}
+                });
+
+                noButton = new Button(getContext());
+                noButton.setText("No");
+                layout.addView(noButton);
+                noButton.setOnClickListener(view2 -> {
+                    updateNo();
+                    {getActivity().finish();}
+                });
+            }
+        });
 
         eventList.clear();
 
@@ -110,5 +141,13 @@ public class HomeFragment extends Fragment {
                 // handle errors here
             }
         });
+    }
+
+    private void updateYes(){
+
+    }
+
+    private void updateNo(){
+
     }
 }
