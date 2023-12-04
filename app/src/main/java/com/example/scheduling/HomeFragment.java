@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends Fragment {
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseRef;
     private ArrayList<ListViewEvent> eventList;
     private ListItemEventAdapter eventlistItemAdapter;
 
@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        eventList.clear();
         getEvents();
     }
 
@@ -44,11 +45,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_tab, container, false);
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
+        databaseRef = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("events");
-
-
 
         if (eventList == null) {
             eventList = new ArrayList<>();
@@ -58,8 +57,6 @@ public class HomeFragment extends Fragment {
         ListView listViewEvents = view.findViewById(R.id.eventListview);
         listViewEvents.setAdapter(eventlistItemAdapter);
 
-        databaseReference = databaseRef;
-
         eventList.clear();
 
         getEvents();
@@ -68,8 +65,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getEvents(){
-        eventList.clear();
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
