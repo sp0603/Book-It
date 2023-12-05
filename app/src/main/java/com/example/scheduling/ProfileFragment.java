@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +70,49 @@ public class ProfileFragment extends Fragment {
         super.onResume();
         eventList.clear();
         getEvents();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("events").child(currentUserId);
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the count of friends
+                    long eventCount = dataSnapshot.getChildrenCount();
+
+                    // Display the friend count
+                    eventCountDisplay.setText("" + eventCount);
+                } else {
+                    eventCountDisplay.setText("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("friends").child(currentUserId);
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the count of friends
+                    long friendCount = dataSnapshot.getChildrenCount();
+
+                    // Display the friend count
+                    friendCountDisplay.setText("" + friendCount);
+                } else {
+                    friendCountDisplay.setText("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
     }
 
     @Override
@@ -172,6 +216,8 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+
+
 
 //        return inflater.inflate(R.layout.fragment_profile, container, false);
 
